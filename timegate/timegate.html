@@ -1,0 +1,306 @@
+<script type="text/javascript">
+ 
+const regexTime = /^(([0-9]|0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]-([0-9]|0[0-9]|1[0-9]|2[0-3]):[0-5][0-9](,([0-9]|0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]-([0-9]|0[0-9]|1[0-9]|2[0-3]):[0-5][0-9])*)?$/; 
+const regexDay = /^(((0[0-9]|1[0-9]|2[0-9]|3[0-1]|[0-9])|ODD|EVEN|ODD-YEAR|EVEN-YEAR|SUN|MON|TUE|WED|THU|FRI|SAT)(,((0[0-9]|1[0-9]|2[0-9]|3[0-1]|[0-9])|ODD|EVEN|ODD-YEAR|EVEN-YEAR|SUN|MON|TUE|WED|THU|FRI|SAT))*)?$/i;
+const regexWeek = /^(([1-6]|ODD|EVEN|ODD-YEAR|EVEN-YEAR)(,([1-6]|ODD|EVEN|ODD-YEAR|EVEN-YEAR))*)?$/i;
+const month = /^((1[0-2]|\d)(,(1[0-2]|\d))*)?$/;
+
+RED.nodes.registerType('timegate',{
+  category: 'function',
+  color: '#E2D96E',
+  defaults: {
+    name: {value: ''},
+    time_1: {
+      value: '00:00-23:59',
+      required: true,
+      validate: RED.validators.regex(regexTime)
+    },
+    day_1: {
+      value: '',
+      required: false,
+      validate: RED.validators.regex(regexDay)
+    },
+    week_1: {
+      value: '',
+      required: false,
+      validate: RED.validators.regex(regexWeek)
+    },
+    month_1: {
+      value: '',
+      required: false,
+      validate: RED.validators.regex(month)
+    },
+
+    time_2: {
+      value: '00:00-23:59',
+      required: false,
+      validate: RED.validators.regex(regexTime)
+    },
+    day_2: {
+      value: '',
+      required: false,
+      validate: RED.validators.regex(regexDay)
+    },
+    week_2: {
+      value: '',
+      required: false,
+      validate: RED.validators.regex(regexWeek)
+    },
+    month_2: {
+      value: '',
+      required: false,
+      validate: RED.validators.regex(month)
+    },
+
+    time_3: {
+      value: '00:00-23:59',
+      required: false,
+      validate: RED.validators.regex(regexTime)
+    },
+    day_3: {
+      value: '',
+      required: false,
+      validate: RED.validators.regex(regexDay)
+    },
+    week_3: {
+      value: '',
+      required: false,
+      validate: RED.validators.regex(regexWeek)
+    },
+    month_3: {
+      value: '',
+      required: false,
+      validate: RED.validators.regex(month)
+    },
+
+    time_4: {
+      value: '00:00-23:59',
+      required: false,
+      validate: RED.validators.regex(regexTime)
+    },
+    day_4: {
+      value: '',
+      required: false,
+      validate: RED.validators.regex(regexDay)
+    },
+    week_4: {
+      value: '',
+      required: false,
+      validate: RED.validators.regex(regexWeek)
+    },
+    month_4: {
+      value: '',
+      required: false,
+      validate: RED.validators.regex(month)
+    },
+
+    time_5: {
+      value: '00:00-23:59',
+      required: false,
+      validate: RED.validators.regex(regexTime)
+    },
+    day_5: {
+      value: '',
+      required: false,
+      validate: RED.validators.regex(regexDay)
+    },
+    week_5: {
+      value: '',
+      required: false,
+      validate: RED.validators.regex(regexWeek)
+    },
+    month_5: {
+      value: '',
+      required: false,
+      validate: RED.validators.regex(month)
+    }
+  },
+  inputs: 1,
+  outputs: 2,
+  inputLabels: "Input",
+  outputLabels: ["Out-1","Out-2"],       
+  icon: 'font-awesome/fa-clock-o',
+  color: "#E6E0F8",
+  label: 'TimeGate'
+});
+</script>
+
+<style>
+  .timeGate { color: rgb(0, 0, 255); }
+  .timeGateCheck { width: 64px; float: left; margin-left: 0px; }
+  .timeGateCheck2 { width: 230px; float: left; margin-left: 0px; }
+  </style>
+
+<script type="text/x-red" data-template-name="timegate">
+  <div class="form-row">
+    <label for="node-input-name"><i class="icon-tag"></i> Name</label>
+    <input type="text" id="node-input-name" placeholder="Name">
+  </div>
+
+  <div class="form-row">
+    <p class="timeGate">Timer 1</p>
+    <label for="node-input-time_1"><i class="icon-tag"></i>Time</label>
+    <input type="text" id="node-input-time_1" placeholder="00:00-23:59">
+  </div>
+  <div class="form-row">
+    <label for="node-input-day_1"><i class="icon-tag"></i>Days</label>
+    <input type="text" id="node-input-day_1" placeholder="1,2,3 | ODD | EVEN | ODD-YEAR | EVEN-YEAR">
+  </div>
+  <div class="form-row">
+    <label for="node-input-week_1"><i class="icon-tag"></i>Weeks</label>
+    <input type="text" id="node-input-week_1" placeholder="1,2,3 | ODD | EVEN | ODD-YEAR | EVEN-YEAR">
+  </div>
+  <div class="form-row">
+    <label for="node-input-month_1"><i class="icon-tag"></i>Months</label>
+    <input type="text" id="node-input-month_1" placeholder="1,2,3">        
+  </div>
+ 
+   <div class="form-row">
+    <p class="timeGate">Timer 2</p>
+    <label for="node-input-time_2"><i class="icon-tag"></i>Time</label>
+    <input type="text" id="node-input-time_2" placeholder="00:00-23:59">
+  </div>
+  <div class="form-row">
+    <label for="node-input-day_2"><i class="icon-tag"></i>Days</label>
+    <input type="text" id="node-input-day_2" placeholder="1,2,3 | ODD | EVEN | ODD-YEAR | EVEN-YEAR">
+  </div>
+  <div class="form-row">
+    <label for="node-input-week_2"><i class="icon-tag"></i>Weeks</label>
+    <input type="text" id="node-input-week_2" placeholder="1,2,3 | ODD | EVEN | ODD-YEAR | EVEN-YEAR">
+  </div>
+  <div class="form-row">
+    <label for="node-input-month_2"><i class="icon-tag"></i>Months</label>
+    <input type="text" id="node-input-month_2" placeholder="1,2,3">        
+  </div>
+
+  <div class="form-row">
+    <p class="timeGate">Timer 3</p>
+    <label for="node-input-time_3"><i class="icon-tag"></i>Time</label>
+    <input type="text" id="node-input-time_3" placeholder="00:00-23:59">
+  </div>
+  <div class="form-row">
+    <label for="node-input-day_3"><i class="icon-tag"></i>Days</label>
+    <input type="text" id="node-input-day_3" placeholder="1,2,3 | ODD | EVEN | ODD-YEAR | EVEN-YEAR">
+  </div>
+  <div class="form-row">
+    <label for="node-input-week_3"><i class="icon-tag"></i>Weeks</label>
+    <input type="text" id="node-input-week_3" placeholder="1,2,3 | ODD | EVEN | ODD-YEAR | EVEN-YEAR">
+  </div>
+  <div class="form-row">
+    <label for="node-input-month_3"><i class="icon-tag"></i>Months</label>
+    <input type="text" id="node-input-month_3" placeholder="1,2,3">        
+  </div>
+  
+  <div class="form-row">
+    <p class="timeGate">Timer 4</p>
+    <label for="node-input-time_4"><i class="icon-tag"></i>Time</label>
+    <input type="text" id="node-input-time_4" placeholder="00:00-23:59">
+  </div>
+  <div class="form-row">
+    <label for="node-input-day_4"><i class="icon-tag"></i>Days</label>
+    <input type="text" id="node-input-day_4" placeholder="1,2,3 | ODD | EVEN | ODD-YEAR | EVEN-YEAR">
+  </div>
+  <div class="form-row">
+    <label for="node-input-week_4"><i class="icon-tag"></i>Weeks</label>
+    <input type="text" id="node-input-week_4" placeholder="1,2,3 | ODD | EVEN | ODD-YEAR | EVEN-YEAR">
+  </div>
+  <div class="form-row">
+    <label for="node-input-month_4"><i class="icon-tag"></i>Months</label>
+    <input type="text" id="node-input-month_4" placeholder="1,2,3">        
+  </div>  
+
+  <div class="form-row"> 
+    <p class="timeGate">Timer 5</p>
+    <label for="node-input-time_5"><i class="icon-tag"></i>Time</label>
+    <input type="text" id="node-input-time_5" placeholder="00:00-23:59">
+  </div>
+  <div class="form-row">
+    <label for="node-input-day_5"><i class="icon-tag"></i>Days</label>
+    <input type="text" id="node-input-day_5" placeholder="1,2,3 | ODD | EVEN | ODD-YEAR | EVEN-YEAR">
+  </div>
+  <div class="form-row">
+    <label for="node-input-week_5"><i class="icon-tag"></i>Weeks</label>
+    <input type="text" id="node-input-week_5" placeholder="1,2,3 | ODD | EVEN | ODD-YEAR | EVEN-YEAR">
+  </div>
+  <div class="form-row">
+    <label for="node-input-month_5"><i class="icon-tag"></i>Months</label>
+    <input type="text" id="node-input-month_5" placeholder="1,2,3">        
+  </div>  
+</script>
+
+<script type="text/html" data-help-name="timegate">
+  <p>A node that compares the current time to the given time and thansfers its input on the first output if the current time matches
+    any of the timer configuration or, otherwise, on the second output.
+  </p>
+
+  <h3>Inputs</h3>
+  <dl class="message-properties">
+      <dt>msg
+          <span class="property-type">any</span>
+      </dt>
+      <dd>the input message to pass unmodified to one of the outputs</dd>
+  </dl>
+
+<h3>Outputs</h3>
+   <ol class="node-ports">
+       <li>out-1
+           <dl class="message-properties">
+               <dt>msg <span class="property-type">any</span></dt>
+               <dd>passes the input msg when any of the timer matches the current time</dd>
+           </dl>
+       </li>
+       <li>Out-2
+           <dl class="message-properties">
+               <dt>msg <span class="property-type">any</span></dt>
+               <dd>passes the input msg when none of the timer matches the current time/dd>
+           </dl>
+       </li>
+   </ol>
+
+<h3>Configurations</h3>
+  <p>You can configure up to five different time matching configurations.</p>
+  <p>For each configuration, you can specify these parameters:</p>
+  <dl class="message-properties">
+    <dt>Time</dt>
+    <dd>One or more <b>time ranges</b> separated by commas.
+    <p>Example:</p>
+    <p><code>10:15-11:30</code> or <code>10:00-12:00,15:30-16:30</code></p>
+    </dd>
+  </dl>
+  <dl class="message-properties">
+    <dt>Day</dt>
+    <dd>
+    <p>One or more <b>day values</b> separated by commas.</p>
+    <p>Possible values:</p>
+    <p><code>1,8,15,21</code> to match the day number</p>
+    <p><code>SUN,MON,...</code> to match the day name</p>
+    <p><code>ODD,EVEN</code> to match odd or even days based on the number of the day in the month (1-31)</p>
+    <p><code>ODD-YEAR,EVEN-YEAR</code> to match odd or even days based on the number of the day in the year (1-365)</p>
+    <p>Example:<code>1,SUN,ODD</code> is true for: the first day of the month, every sundays and every odd day number in the month</p>
+    </dd>
+  </dl>
+  <dl class="message-properties">
+    <dt>Week</dt>
+    <dd>
+    <p>One or more <b>week values</b> separated by commas.</p>
+    <p>Possible values:</p>
+    <p><code>1,2,3,4,5,6</code> to match the week number in the month</p>
+    <p><code>ODD,EVEN</code> to match odd or even weeks based on the number of the week in the month (1-6)</p>
+    <p><code>ODD-YEAR,EVEN-YEAR</code> to match odd or even weeks based on the number of the day in the year (1-52)</p>
+    <p>Example:<code>1,EVEN-YEAR</code> is true for: the first week of the month and every even week number in the year</p>
+    </dd>
+  </dl>
+  <dl class="message-properties">
+    <dt>Month</dt>
+    <dd>
+    <p>One or more <b>month values</b> separated by commas.</p>
+    <p>Possible values:</p>
+    <p><code>1,2,3,4,5,6</code> to match the month</p>
+    <p>Example:<code>1,2,3</code> is true for: January, February and March</p>
+    </dd>
+  </dl>  
+<h3>References</h3>
+  <ul>
+      <li><a href="https://github.com/stefanobertini/node-red-contrib-timegate">GitHub</a> - the nodes github repository</li>
+  </ul>
+</script>  

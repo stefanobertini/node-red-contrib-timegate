@@ -1,0 +1,39 @@
+{
+  "name": "@stefanobertini/node-red-contrib-timegate",
+  "version": "1.0.0",
+  "description": "A node that routes any input according to the current time.",
+  "keywords": [
+    "node-red",
+    "time",
+    "compare"
+  ],
+  "node-red": {
+    "version": ">=2.0.0",
+    "nodes": {
+      "timegate": "timegate/timegate.js"
+    }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/stefanobertini/node-red-contrib-timegate.git"
+  },
+  "author": "Stefano Bertini",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/stefanobertini/node-red-contrib-timegate/issues"
+  },
+  "homepage": "https://github.com/stefanobertini/node-red-contrib-timegate#readme",
+  "devDependencies": {
+    "eslint": "^8.41.0",
+    "mocha": "^10.2.0",
+    "node-red": "^3.0.2",
+    "node-red-node-test-helper": "^0.3.1"
+  },
+  "scripts": {
+    "test": "mocha \"test/**/*_spec.js\" ",
+    "lint": "eslint timegate/*.js"
+  },
+  "dependencies": {
+    "moment": "^2.29.4"
+  }
+}

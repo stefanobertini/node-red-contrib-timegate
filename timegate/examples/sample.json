@@ -1,0 +1,112 @@
+[
+    {
+        "id": "bcb33daab4616e13",
+        "type": "tab",
+        "label": "Flow 1",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "91a150e02636bffe",
+        "type": "inject",
+        "z": "bcb33daab4616e13",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "Hello World",
+        "payloadType": "str",
+        "x": 130,
+        "y": 160,
+        "wires": [
+            [
+                "87741a4bd4b4cdd8"
+            ]
+        ]
+    },
+    {
+        "id": "87741a4bd4b4cdd8",
+        "type": "timegate",
+        "z": "bcb33daab4616e13",
+        "name": "TimeGateNode",
+        "time_1": "00:00-12:00",
+        "day_1": "1,2,3,ODD",
+        "week_1": "ODD-YEAR",
+        "month_1": "",
+        "time_2": "12:00-23:59",
+        "day_2": "4,5,6,EVEN",
+        "week_2": "EVEN-YEAR",
+        "month_2": "1,2,3,4,5,6",
+        "time_3": "",
+        "day_3": "",
+        "week_3": "",
+        "month_3": "",
+        "time_4": "",
+        "day_4": "",
+        "week_4": "",
+        "month_4": "",
+        "time_5": "",
+        "day_5": "",
+        "week_5": "",
+        "month_5": "",
+        "x": 330,
+        "y": 160,
+        "wires": [
+            [
+                "ee1d73fa057ab3b8"
+            ],
+            [
+                "4f9ef0cdb80ea823"
+            ]
+        ],
+        "inputLabels": [
+            "In"
+        ],
+        "outputLabels": [
+            "Out1",
+            "Out2"
+        ]
+    },
+    {
+        "id": "ee1d73fa057ab3b8",
+        "type": "debug",
+        "z": "bcb33daab4616e13",
+        "name": "Out 1",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 590,
+        "y": 120,
+        "wires": []
+    },
+    {
+        "id": "4f9ef0cdb80ea823",
+        "type": "debug",
+        "z": "bcb33daab4616e13",
+        "name": "Out 2",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 590,
+        "y": 200,
+        "wires": []
+    }
+]
