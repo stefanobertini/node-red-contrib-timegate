@@ -102,7 +102,7 @@ This configuration will pass the input to Out-1 only from 10:00 to 11:00 of ever
 Otherwise, it will pass the input to Out-2.
 
 ### Example
-See the [example](timegate/examples/sample.json) for a basic setup of the node
+See the [example](examples/sample.json) for a basic setup of the node
 
 ## References
 
@@ -120,3 +120,5 @@ Thanks.
 * 1.0.0 First release
 * 1.0.1 Minor fixes
 * 1.0.2 Added better help text
+* 1.0.3 Fixed a regression bug
+* 1.0.4 Moved examples to the correct folder

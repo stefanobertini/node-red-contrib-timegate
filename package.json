@@ -1,6 +1,6 @@
 {
   "name": "@stefanobertini/node-red-contrib-timegate",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "A node that routes any input according to the current time.",
   "keywords": [
     "node-red",
@@ -28,6 +28,9 @@
     "mocha": "^10.2.0",
     "node-red": "^3.0.2",
     "node-red-node-test-helper": "^0.3.1"
+  },
+  "engines": {
+    "node": ">=12.0.0"
   },
   "scripts": {
     "test": "mocha \"test/**/*_spec.js\" ",
