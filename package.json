@@ -1,6 +1,6 @@
 {
   "name": "@stefanobertini/node-red-contrib-timegate",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A node that routes any input according to the current time.",
   "keywords": [
     "node-red",
