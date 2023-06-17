@@ -120,4 +120,5 @@ Thanks.
 * 1.0.0 First release
 * 1.0.1 Minor fixes
 * 1.0.2 Added better help text
-* 1.0.3 Moved examples to correct folder
+* 1.0.3 Fixed a regression bug
+* 1.0.4 Moved examples to the correct folder
