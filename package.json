@@ -35,5 +35,8 @@
   },
   "dependencies": {
     "moment": "^2.29.4"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }
