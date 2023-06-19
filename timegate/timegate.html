@@ -1,10 +1,42 @@
 <script type="text/javascript">
  
-  const regexTime = /^(([0-9]|0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]-([0-9]|0[0-9]|1[0-9]|2[0-3]):[0-5][0-9](,([0-9]|0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]-([0-9]|0[0-9]|1[0-9]|2[0-3]):[0-5][0-9])*)?$/; 
   const regexDay = /^(((0[0-9]|1[0-9]|2[0-9]|3[0-1]|[0-9])|ODD|EVEN|ODD-YEAR|EVEN-YEAR|SUN|MON|TUE|WED|THU|FRI|SAT)(,((0[0-9]|1[0-9]|2[0-9]|3[0-1]|[0-9])|ODD|EVEN|ODD-YEAR|EVEN-YEAR|SUN|MON|TUE|WED|THU|FRI|SAT))*)?$/i;
   const regexWeek = /^(([1-6]|ODD|EVEN|ODD-YEAR|EVEN-YEAR)(,([1-6]|ODD|EVEN|ODD-YEAR|EVEN-YEAR))*)?$/i;
   const month = /^((1[0-2]|\d)(,(1[0-2]|\d))*)?$/;
   
+  const regexTime = /^(0[0-9]|1[0-9]|2[0-3]|[0-9]):[0-5][0-9]$/g;
+  const specialTimes = ["sunrise","sunriseEnd","goldenHour","goldenHourEnd","sunset","sunsetStart","solarNoon","dusk","nauticalDusk","night","nightEnd","nadir","dawn","nauticalDawn"];
+
+  function validateTime(timeEntry) {
+    var valid = true;
+    if (!isEmpty(timeEntry)) {
+      const split = timeEntry.split(",");
+      split.forEach(item => {
+        if (!checkValidTime(item)) {
+          valid = false;
+        }
+      });
+    }
+    return valid;
+  }
+ 
+  function checkValidTime(item) {
+
+    const split = item.split("-");
+    if (split.length != 2) {
+      return false;
+    }
+
+    const from = split[0].trim().toLowerCase();
+    const to = split[1].trim().toLowerCase(); 
+
+    return ((from.match(regexTime) || specialTimes.includes(from)) && (to.match(regexTime) || specialTimes.includes(to)));
+  }
+ 
+  function isEmpty(str) {
+    return (!str || str.trim().length === 0);
+  }
+
   RED.nodes.registerType('timegate',{
     category: 'function',
     color: '#E2D96E',
@@ -13,7 +45,7 @@
       time_1: {
         value: '00:00-23:59',
         required: true,
-        validate: RED.validators.regex(regexTime)
+        validate: validateTime
       },
       day_1: {
         value: '',
@@ -34,7 +66,7 @@
       time_2: {
         value: '',
         required: false,
-        validate: RED.validators.regex(regexTime)
+        validate: validateTime
       },
       day_2: {
         value: '',
@@ -55,7 +87,7 @@
       time_3: {
         value: '',
         required: false,
-        validate: RED.validators.regex(regexTime)
+        validate: validateTime
       },
       day_3: {
         value: '',
@@ -76,7 +108,7 @@
       time_4: {
         value: '',
         required: false,
-        validate: RED.validators.regex(regexTime)
+        validate: validateTime
       },
       day_4: {
         value: '',
@@ -97,7 +129,7 @@
       time_5: {
         value: '',
         required: false,
-        validate: RED.validators.regex(regexTime)
+        validate: validateTime
       },
       day_5: {
         value: '',
@@ -122,7 +154,7 @@
     icon: 'font-awesome/fa-clock-o',
     color: "#E6E0F8",
     label: function() {
-            return this.name|| 'TimeGate';
+            return this.name|| 'timegate';
         } 
   });
   </script>
