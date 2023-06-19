@@ -24,6 +24,23 @@ describe('TimeGateNode Node', function () {
     });
   });
 
+  it('should have default label', function (done) {
+    var flow = [{ id: "tg", type: "timegate" }];
+    helper.load(timegateNode, flow, function () {
+      var tg = helper.getNode("tg");
+      tg.should.have.property('label', 'TimeGate');
+      done();
+    });
+  });
+  it('should change label', function (done) {
+    var flow = [{ id: "tg", type: "timegate", name: "test name" }];
+    helper.load(timegateNode, flow, function () {
+      var tg = helper.getNode("tg");
+      tg.should.have.property('label', 'test name');
+      done();
+    });
+  });
+
   // Time Tests
   it('check time node1 single interval 1', function (done) {
     var config = {

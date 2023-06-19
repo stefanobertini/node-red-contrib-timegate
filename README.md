@@ -122,3 +122,4 @@ Thanks.
 * 1.0.2 Added better help text
 * 1.0.3 Fixed a regression bug
 * 1.0.4 Moved examples to the correct folder
+* 1.0.5 Fixes issue #6 Name not shown in node
