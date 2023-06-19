@@ -121,7 +121,9 @@
     outputLabels: ["Out-1","Out-2"],       
     icon: 'font-awesome/fa-clock-o',
     color: "#E6E0F8",
-    label: 'TimeGate'
+    label: function() {
+            return this.name|| 'TimeGate';
+        } 
   });
   </script>
   
