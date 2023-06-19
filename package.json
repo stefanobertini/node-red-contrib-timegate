@@ -39,7 +39,8 @@
     "lint": "eslint timegate/*.js"
   },
   "dependencies": {
-    "moment": "^2.29.4"
+    "moment": "^2.29.4",
+    "suncalc": "^1.9.0"
   },
   "publishConfig": {
     "access": "public"
