@@ -1,9 +1,12 @@
+const suncalc_utils = require('./suncalc_utils')
+
 const validDays = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31",
   "ODD", "EVEN", "ODD-YEAR", "EVEN-YEAR",
   "SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"];
 
 const validWeeks = ["1", "2", "3", "4", "5", "6", "ODD", "EVEN", "ODD-YEAR", "EVEN-YEAR"];
 const validMonths = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"];
+const regexTime = /^(0[0-9]|1[0-9]|2[0-3]|[0-9]):[0-5][0-9]$/g;
 
 module.exports = {
 
@@ -71,9 +74,13 @@ module.exports = {
 
 function getTime(time) {
   const split = time.split(":");
-  if (split.length != 2) {
-    return -1;
-  } else {
+  if (split.length == 1) {
+    if (suncalc_utils.isSunCalcKeyword(split)) {
+      return suncalc_utils.getSunCalcKeywordId(split);
+    } else {
+      return -1;
+    }
+  } else if (split.length == 2) {
     try {
       const hour = Number(split[0]);
       const minute = Number(split[1]);
@@ -83,8 +90,9 @@ function getTime(time) {
       return hour * 60 + minute;
     } catch (error) {
       return -1;
-    }
-
+    } 
+  } else {
+    return -1;
   }
 }
 
@@ -98,10 +106,11 @@ function checkValidTime(item) {
     return false;
   }
 
-  const from = getTime(split[0]);
-  const to = getTime(split[1]);
 
-  return (from != -1 && to != -1) && (from < to);
+  const from = split[0].trim().toLowerCase();
+  const to = split[1].trim().toLowerCase(); 
+
+  return ((from.match(regexTime) || suncalc_utils.isSunCalcKeyword(from)) && (to.match(regexTime) || suncalc_utils.isSunCalcKeyword(to)));  
 }
 
 function showConfigErrorStatus(msg, index, node) {

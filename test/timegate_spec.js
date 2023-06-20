@@ -108,8 +108,6 @@ describe('TimeGateNode Node', function () {
     doTest(config, "2023/06/03 02:50", "msg", false, done);
   });
 
-
-
   it('check time node2 multiple interval 1', function (done) {
     var config = {
       "time_1": "01:00-02:00,04:00-05:00,06:00-07:00",
@@ -191,6 +189,13 @@ describe('TimeGateNode Node', function () {
     doTest(config, "2023/06/03 04:50", "msg", false, done);
   });
 
+  it('check time node1 should work with inverted range', function (done) {
+    var config = {
+      "time_1": "05:00-04:00",
+    };
+
+    doTest(config, "2023/06/03 04:50", true, done);
+  });
 
   // Week Tests
   it('check week number node1', function (done) {

@@ -72,7 +72,10 @@ function isTimeInRange(configEntry, refMoment) {
   const time = refMoment.hours() * 60 + refMoment.minutes();
   for (let index = 0; index < configEntry.intervals.length; index++) {
     const interval = configEntry.intervals[index];
-    if(time >= interval.from && time <= interval.to) {
+    const intervalMin = Math.min (interval.from, interval.to);
+    const intervalMax = Math.max (interval.from, interval.to);
+
+    if(time >= intervalMin && time <= intervalMax) {
       return true;
     } 
   }
