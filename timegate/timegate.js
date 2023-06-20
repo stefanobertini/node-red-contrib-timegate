@@ -1,7 +1,6 @@
 const moment = require('moment')
 const config_utils = require('./config_utils')
 const range_utils = require('./range_utils')
-const suncalc = require('suncalc');
 
 module.exports = function (RED) {
 

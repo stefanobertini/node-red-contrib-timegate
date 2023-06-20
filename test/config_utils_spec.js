@@ -57,14 +57,6 @@ describe('TimeGateNode Config', function () {
     chechStatus(config, "Config 1: Invalid time.", done);
   });
 
-
-  it('invalid time inverted intervall', function (done) {
-    var config = {
-      "time_1": "11:00-10:00",
-    };
-
-    chechStatus(config, "Config 1: Invalid time.", done);
-  });  
   it('invalid empty time', function (done) {
     var config = {
       "time_1": "10:00-", 
@@ -89,8 +81,16 @@ describe('TimeGateNode Config', function () {
     chechStatus(config, "Config 1: Invalid time.", done);
   });
 
+  it('valid suncal keywords', function (done) {
+    var config = {
+      "time_1": "sunrise - sunriseend,  goldenhour  -  goldenhourend  ,SUNset-sunsetSTART,solarnoon-dusk,nauticaldusk-night,nightend-nadir,dawn-nauticaldawn",
+    };
 
-   // Day tests 
+    chechStatusEmpty(config, done);
+  });
+  
+  
+  // Day tests 
    it('valid single day', function (done) {
     var config = {
       "time_1": "10:00-11:00", "day_1": "1",

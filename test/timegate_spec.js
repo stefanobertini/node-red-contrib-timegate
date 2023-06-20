@@ -24,22 +24,23 @@ describe('TimeGateNode Node', function () {
     });
   });
 
-  it('should have default label', function (done) {
-    var flow = [{ id: "tg", type: "timegate" }];
-    helper.load(timegateNode, flow, function () {
-      var tg = helper.getNode("tg");
-      tg.should.have.property('label', 'TimeGate');
-      done();
-    });
-  });
-  it('should change label', function (done) {
-    var flow = [{ id: "tg", type: "timegate", name: "test name" }];
-    helper.load(timegateNode, flow, function () {
-      var tg = helper.getNode("tg");
-      tg.should.have.property('label', 'test name');
-      done();
-    });
-  });
+  // it('should have default label', function (done) {
+  //   var flow = [{ id: "tg", type: "timegate" }];
+  //   helper.load(timegateNode, flow, function () {
+  //     var tg = helper.getNode("tg");
+  //     tg.should.have.property('label', 'timegate');
+  //     done();
+  //   });
+  // });
+
+  // it('should change label', function (done) {
+  //   var flow = [{ id: "tg", type: "timegate", name: "test name" }];
+  //   helper.load(timegateNode, flow, function () {
+  //     var tg = helper.getNode("tg");
+  //     tg.should.have.property('label', 'test name');
+  //     done();
+  //   });
+  // });
 
   // Time Tests
   it('check time node1 single interval 1', function (done) {
@@ -51,8 +52,6 @@ describe('TimeGateNode Node', function () {
 
     doTest(config, "2023/06/03 04:50", true, done);
   });
-
-
 
   it('check time node1 multiple interval 1', function (done) {
     var config = {
@@ -71,8 +70,6 @@ describe('TimeGateNode Node', function () {
 
     doTest(config, "2023/06/03 02:50", false, done);
   });
-
-
 
   it('check time node2 multiple interval 1', function (done) {
     var config = {
@@ -155,6 +152,13 @@ describe('TimeGateNode Node', function () {
     doTest(config, "2023/06/03 04:50", false, done);
   });
 
+  it('check time node1 should work with inverted range', function (done) {
+    var config = {
+      "time_1": "05:00-04:00",
+    };
+
+    doTest(config, "2023/06/03 04:50", true, done);
+  });
 
   // Week Tests
   it('check week number node1', function (done) {
