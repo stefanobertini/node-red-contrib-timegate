@@ -10,6 +10,8 @@
     color: '#E2D96E',
     defaults: {
       name: {value: ''},
+      targetDateTime: {value: 'targetDateTime', required: false},
+      targetDateTimeType: { },
       time_1: {
         value: '00:00-23:59',
         required: true,
@@ -123,7 +125,25 @@
     color: "#E6E0F8",
     label: function() {
             return this.name|| 'TimeGate';
-        } 
+        },
+    oneditprepare: function() {
+      $("#node-input-targetDateTime").typedInput({
+          type: this.targetDateTimeType || "msg",
+          types:["msg", "flow", "global"],
+          typeField: "#node-input-targetDateTimeType"
+      })
+
+      $("#node-input-targetDateTime").on('change',function() {
+                if ($("#node-input-targetDateTime").typedInput('type') === 'msg' &&
+                    $("#node-input-targetDateTime").typedInput('value') === ''
+                ) {
+                    $("#node-input-targetDateTime").typedInput('value','targetDateTime');
+                }
+            });
+    },
+    oneditsave: function() {
+      this.targetDateTimeType = $("#node-input-targetDateTime").typedInput('type');
+    }
   });
   </script>
   
@@ -133,97 +153,103 @@
   
   <script type="text/x-red" data-template-name="timegate">
     <div class="form-row">
-      <label for="node-input-name"><i class="icon-tag"></i> Name</label>
+      <label for="node-input-name"><i class="fa fa-tag"></i> </i> Name</label>
       <input type="text" id="node-input-name" placeholder="Name">
     </div>
-  
+
+    <div class="form-row">
+      <label for="node-input-targetDateTime"><i class="fa fa-ellipsis-h"></i> Reference DateTime field</label>
+      <input type="text" id="node-input-targetDateTime">
+      <input type="hidden" id="node-input-targetDateTimeType">
+    </div>
+
     <div class="form-row">
       <p class="timeGate">Timer 1</p>
-      <label for="node-input-time_1"><i class="icon-tag"></i>Time</label>
+      <label for="node-input-time_1"><i class="fa fa-clock-o"></i> Time</label>
       <input type="text" id="node-input-time_1" placeholder="00:00-23:59">
     </div>
     <div class="form-row">
-      <label for="node-input-day_1"><i class="icon-tag"></i>Days</label>
+      <label for="node-input-day_1"><i class="fa fa-calendar"></i> Days</label>
       <input type="text" id="node-input-day_1" placeholder="1,2,3 | ODD | EVEN | ODD-YEAR | EVEN-YEAR">
     </div>
     <div class="form-row">
-      <label for="node-input-week_1"><i class="icon-tag"></i>Weeks</label>
+      <label for="node-input-week_1"><i class="fa fa-calendar"></i> Weeks</label>
       <input type="text" id="node-input-week_1" placeholder="1,2,3 | ODD | EVEN | ODD-YEAR | EVEN-YEAR">
     </div>
     <div class="form-row">
-      <label for="node-input-month_1"><i class="icon-tag"></i>Months</label>
+      <label for="node-input-month_1"><i class="fa fa-calendar"></i> Months</label>
       <input type="text" id="node-input-month_1" placeholder="1,2,3">        
     </div>
    
      <div class="form-row">
       <p class="timeGate">Timer 2</p>
-      <label for="node-input-time_2"><i class="icon-tag"></i>Time</label>
+      <label for="node-input-time_2"><i class="fa fa-clock-o"></i> Time</label>
       <input type="text" id="node-input-time_2" placeholder="00:00-23:59">
     </div>
     <div class="form-row">
-      <label for="node-input-day_2"><i class="icon-tag"></i>Days</label>
+      <label for="node-input-day_2"><i class="fa fa-calendar"></i>  Days</label>
       <input type="text" id="node-input-day_2" placeholder="1,2,3 | ODD | EVEN | ODD-YEAR | EVEN-YEAR">
     </div>
     <div class="form-row">
-      <label for="node-input-week_2"><i class="icon-tag"></i>Weeks</label>
+      <label for="node-input-week_2"><i class="fa fa-calendar"></i> Weeks</label>
       <input type="text" id="node-input-week_2" placeholder="1,2,3 | ODD | EVEN | ODD-YEAR | EVEN-YEAR">
     </div>
     <div class="form-row">
-      <label for="node-input-month_2"><i class="icon-tag"></i>Months</label>
+      <label for="node-input-month_2"><i class="fa fa-calendar"></i> Months</label>
       <input type="text" id="node-input-month_2" placeholder="1,2,3">        
     </div>
   
     <div class="form-row">
       <p class="timeGate">Timer 3</p>
-      <label for="node-input-time_3"><i class="icon-tag"></i>Time</label>
+      <label for="node-input-time_3"><i class="fa fa-clock-o"></i> Time</label>
       <input type="text" id="node-input-time_3" placeholder="00:00-23:59">
     </div>
     <div class="form-row">
-      <label for="node-input-day_3"><i class="icon-tag"></i>Days</label>
+      <label for="node-input-day_3"><i class="fa fa-calendar"></i> Days</label>
       <input type="text" id="node-input-day_3" placeholder="1,2,3 | ODD | EVEN | ODD-YEAR | EVEN-YEAR">
     </div>
     <div class="form-row">
-      <label for="node-input-week_3"><i class="icon-tag"></i>Weeks</label>
+      <label for="node-input-week_3"><i class="fa fa-calendar"></i> Weeks</label>
       <input type="text" id="node-input-week_3" placeholder="1,2,3 | ODD | EVEN | ODD-YEAR | EVEN-YEAR">
     </div>
     <div class="form-row">
-      <label for="node-input-month_3"><i class="icon-tag"></i>Months</label>
+      <label for="node-input-month_3"><i class="fa fa-calendar"></i> Months</label>
       <input type="text" id="node-input-month_3" placeholder="1,2,3">        
     </div>
     
     <div class="form-row">
       <p class="timeGate">Timer 4</p>
-      <label for="node-input-time_4"><i class="icon-tag"></i>Time</label>
+      <label for="node-input-time_4"><i class="fa fa-clock-o"></i> Time</label>
       <input type="text" id="node-input-time_4" placeholder="00:00-23:59">
     </div>
     <div class="form-row">
-      <label for="node-input-day_4"><i class="icon-tag"></i>Days</label>
+      <label for="node-input-day_4"><i class="fa fa-calendar"></i> Days</label>
       <input type="text" id="node-input-day_4" placeholder="1,2,3 | ODD | EVEN | ODD-YEAR | EVEN-YEAR">
     </div>
     <div class="form-row">
-      <label for="node-input-week_4"><i class="icon-tag"></i>Weeks</label>
+      <label for="node-input-week_4"><i class="fa fa-calendar"></i> Weeks</label>
       <input type="text" id="node-input-week_4" placeholder="1,2,3 | ODD | EVEN | ODD-YEAR | EVEN-YEAR">
     </div>
     <div class="form-row">
-      <label for="node-input-month_4"><i class="icon-tag"></i>Months</label>
+      <label for="node-input-month_4"><i class="fa fa-calendar"></i> Months</label>
       <input type="text" id="node-input-month_4" placeholder="1,2,3">        
     </div>  
   
     <div class="form-row"> 
       <p class="timeGate">Timer 5</p>
-      <label for="node-input-time_5"><i class="icon-tag"></i>Time</label>
+      <label for="node-input-time_5"><i class="fa fa-clock-o"></i> Time</label>
       <input type="text" id="node-input-time_5" placeholder="00:00-23:59">
     </div>
     <div class="form-row">
-      <label for="node-input-day_5"><i class="icon-tag"></i>Days</label>
+      <label for="node-input-day_5"><i class="fa fa-calendar"></i> Days</label>
       <input type="text" id="node-input-day_5" placeholder="1,2,3 | ODD | EVEN | ODD-YEAR | EVEN-YEAR">
     </div>
     <div class="form-row">
-      <label for="node-input-week_5"><i class="icon-tag"></i>Weeks</label>
+      <label for="node-input-week_5"><i class="fa fa-calendar"></i> Weeks</label>
       <input type="text" id="node-input-week_5" placeholder="1,2,3 | ODD | EVEN | ODD-YEAR | EVEN-YEAR">
     </div>
     <div class="form-row">
-      <label for="node-input-month_5"><i class="icon-tag"></i>Months</label>
+      <label for="node-input-month_5"><i class="fa fa-calendar"></i> Months</label>
       <input type="text" id="node-input-month_5" placeholder="1,2,3">        
     </div>  
   </script>
