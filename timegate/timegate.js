@@ -13,36 +13,53 @@ module.exports = function (RED) {
 
     config_utils.showConfigErrors(configEntries, node);
 
-    // Get the time from inputs, for unit testing
-    var unittest_time = config.unittest_time;
-
     node.on('input', function (msg, send, done) {
       var isTime = false;
-      var foundIndex =0 ;
+      var foundIndex = 0;
 
-      var now = moment();
-      if (unittest_time) {
-        now = moment(unittest_time, "YYYY/MM/DD hh:mm");
-      }
+      RED.util.evaluateNodeProperty(config.targetDateTime, config.targetDateTimeType, node, msg, (err, value) => {
+        if (err) {
+          showError(err.message, node);
+        } else {
 
-      for (let index = 0; index < configEntries.length && !isTime; index++) {
-        const configEntry = configEntries[index];
+          var validDate = false;
+          var now;
+          
+          if (value) {
+            now = moment(value, "YYYY/MM/DD hh:mm");
+            if (!now.isValid()) {
+              now = moment(value, "YYYY/MM/DD");
+            }
+            validDate = now.isValid();
+          } else {
+            now = moment();
+            validDate = true;
+          }
 
-        if (configEntry.valid.all && !configEntry.empty.empty && configEntry.empty.correct) {
-          if (range_utils.isInRange(configEntry, now)) {
-            isTime = true;
-            foundIndex = index + 1;
-          }     
+          if (validDate) {
+            for (let index = 0; index < configEntries.length && !isTime; index++) {
+              const configEntry = configEntries[index];
+
+              if (configEntry.valid.all && !configEntry.empty.empty && configEntry.empty.correct) {
+                if (range_utils.isInRange(configEntry, now)) {
+                  isTime = true;
+                  foundIndex = index + 1;
+                }
+              }
+            }
+
+            showStatus(isTime, foundIndex, now, node);
+
+            if (isTime) {
+              send([msg, null]);
+            } else {
+              send([null, msg]);
+            }
+          } else {
+            showError("Invalid date: " + value, node);
+          }
         }
-      }
-
-      showStatus(isTime, foundIndex, now, node) ;
-
-      if (isTime) {
-        send([msg, null]);
-      } else {
-        send([null, msg]);
-      }
+      });
 
       if (done) {
         done();
@@ -65,6 +82,13 @@ function showStatus(isTime, index, now, node) {
 
   text += " at: " + now.format("MMM D, HH:mm");
 
-  node.status({ fill: isTime ? "green": "yellow", shape: "ring", text: text });
+  node.status({ fill: isTime ? "green" : "yellow", shape: "ring", text: text });
   node.log(text);
+}
+
+function showError(text, node) {
+  text += " at: " + moment().format("MMM D, HH:mm");
+
+  node.status({ fill: "red", shape: "dot", text: text });
+  node.error(text);
 }
