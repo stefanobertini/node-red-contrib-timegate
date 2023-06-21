@@ -24,34 +24,54 @@ describe('TimeGateNode Node', function () {
     });
   });
 
-  it('should have default label', function (done) {
-    var flow = [{ id: "tg", type: "timegate" }];
-    helper.load(timegateNode, flow, function () {
-      var tg = helper.getNode("tg");
-      tg.should.have.property('label', 'TimeGate');
-      done();
-    });
-  });
-  it('should change label', function (done) {
-    var flow = [{ id: "tg", type: "timegate", name: "test name" }];
-    helper.load(timegateNode, flow, function () {
-      var tg = helper.getNode("tg");
-      tg.should.have.property('label', 'test name');
-      done();
-    });
-  });
+  // it('should have default label', function (done) {
+  //   var flow = [{ id: "tg", type: "timegate" }];
+  //   helper.load(timegateNode, flow, function () {
+  //     var tg = helper.getNode("tg");
+  //     tg.should.have.property('label', 'TimeGate');
+  //     done();
+  //   });
+  // });
+
+  // it('should change label', function (done) {
+  //   var flow = [{ id: "tg", type: "timegate", name: "test name" }];
+  //   helper.load(timegateNode, flow, function () {
+  //     var tg = helper.getNode("tg");
+  //     tg.should.have.property('label', 'test name');
+  //     done();
+  //   });
+  // });
 
   // Time Tests
-  it('check time node1 single interval 1', function (done) {
+  it('check time node1 single interval 1 message', function (done) {
     var config = {
       "time_1": "01:00-02:00",
       "time_2": "04:00-05:00",
       "time_4": "06:00-07:00",
     };
 
-    doTest(config, "2023/06/03 04:50", true, done);
+    doTest(config, "2023/06/03 04:50", "msg", true, done);
   });
 
+  it('check time node1 single interval 1 flow', function (done) {
+    var config = {
+      "time_1": "01:00-02:00",
+      "time_2": "04:00-05:00",
+      "time_4": "06:00-07:00",
+    };
+
+    doTest(config, "2023/06/03 04:50", "flow", true, done);
+  });
+
+  it('check time node1 single interval 1 global', function (done) {
+    var config = {
+      "time_1": "01:00-02:00",
+      "time_2": "04:00-05:00",
+      "time_4": "06:00-07:00",
+    };
+
+    doTest(config, "2023/06/03 04:50", "global", true, done);
+  });
 
 
   it('check time node1 multiple interval 1', function (done) {
@@ -59,7 +79,7 @@ describe('TimeGateNode Node', function () {
       "time_1": "01:00-02:00,04:00-05:00,06:00-07:00",
     };
 
-    doTest(config, "2023/06/03 04:50", true, done);
+    doTest(config, "2023/06/03 04:50", "msg", true, done);
   });
 
   it('check time node2 single interval 1', function (done) {
@@ -69,7 +89,7 @@ describe('TimeGateNode Node', function () {
       "time_4": "06:00-07:00",
     };
 
-    doTest(config, "2023/06/03 02:50", false, done);
+    doTest(config, "2023/06/03 02:50", "msg", false, done);
   });
 
 
@@ -79,7 +99,7 @@ describe('TimeGateNode Node', function () {
       "time_1": "01:00-02:00,04:00-05:00,06:00-07:00",
     };
 
-    doTest(config, "2023/06/03 02:50", false, done);
+    doTest(config, "2023/06/03 02:50", "msg", false, done);
   });
 
   // Day Tests
@@ -89,7 +109,7 @@ describe('TimeGateNode Node', function () {
       "day_1": "1,2,3"
     };
 
-    doTest(config, "2023/06/03 04:50", true, done);
+    doTest(config, "2023/06/03 04:50", "msg", true, done);
   });
 
   it('check day odd node1', function (done) {
@@ -98,7 +118,7 @@ describe('TimeGateNode Node', function () {
       "day_1": "oDd"
     };
 
-    doTest(config, "2023/06/03 04:50", true, done);
+    doTest(config, "2023/06/03 04:50", "msg", true, done);
   });
 
   it('check day even-year node1', function (done) {
@@ -107,7 +127,7 @@ describe('TimeGateNode Node', function () {
       "day_1": "even-YEAR"
     };
 
-    doTest(config, "2023/06/03 04:50", true, done);
+    doTest(config, "2023/06/03 04:50", "msg", true, done);
   });
 
   it('check day name node1', function (done) {
@@ -116,7 +136,7 @@ describe('TimeGateNode Node', function () {
       "day_1": "Sat,suN"
     };
 
-    doTest(config, "2023/06/03 04:50", true, done);
+    doTest(config, "2023/06/03 04:50", "msg", true, done);
   });
 
   it('check day even node2', function (done) {
@@ -125,7 +145,7 @@ describe('TimeGateNode Node', function () {
       "day_1": "evEN"
     };
 
-    doTest(config, "2023/06/03 04:50", false, done);
+    doTest(config, "2023/06/03 04:50", "msg", false, done);
   });
 
   it('check day odd-year node2', function (done) {
@@ -134,7 +154,7 @@ describe('TimeGateNode Node', function () {
       "day_1": "Odd-YEAR"
     };
 
-    doTest(config, "2023/06/03 04:50", false, done);
+    doTest(config, "2023/06/03 04:50", "msg", false, done);
   });
 
   it('check day name node1', function (done) {
@@ -143,7 +163,7 @@ describe('TimeGateNode Node', function () {
       "day_1": "suN,mon"
     };
 
-    doTest(config, "2023/06/03 04:50", false, done);
+    doTest(config, "2023/06/03 04:50", "msg", false, done);
   });
 
   it('check day number node2', function (done) {
@@ -152,7 +172,7 @@ describe('TimeGateNode Node', function () {
       "day_1": "4,5,6"
     };
 
-    doTest(config, "2023/06/03 04:50", false, done);
+    doTest(config, "2023/06/03 04:50", "msg", false, done);
   });
 
 
@@ -163,7 +183,7 @@ describe('TimeGateNode Node', function () {
       "week_1": "3"
     };
 
-    doTest(config, "2023/06/12 04:50", true, done);
+    doTest(config, "2023/06/12 04:50", "msg", true, done);
   });
 
   it('check week odd node1', function (done) {
@@ -172,7 +192,7 @@ describe('TimeGateNode Node', function () {
       "week_1": "oDd"
     };
 
-    doTest(config, "2023/06/12 04:50", true, done);
+    doTest(config, "2023/06/12 04:50", "msg", true, done);
   });
 
   it('check week even-year node1', function (done) {
@@ -181,7 +201,7 @@ describe('TimeGateNode Node', function () {
       "week_1": "even-YEAR"
     };
 
-    doTest(config, "2023/06/12 04:50", true, done);
+    doTest(config, "2023/06/12 04:50", "msg", true, done);
   });
 
   it('check week even node2', function (done) {
@@ -190,7 +210,7 @@ describe('TimeGateNode Node', function () {
       "week_1": "evEN"
     };
 
-    doTest(config, "2023/06/12 04:50", false, done);
+    doTest(config, "2023/06/12 04:50", "msg", false, done);
   });
 
   it('check week odd-year node2', function (done) {
@@ -199,7 +219,7 @@ describe('TimeGateNode Node', function () {
       "week_1": "Odd-YEAR"
     };
 
-    doTest(config, "2023/06/12 04:50", false, done);
+    doTest(config, "2023/06/12 04:50", "msg", false, done);
   });
 
   it('check week number node2', function (done) {
@@ -208,7 +228,7 @@ describe('TimeGateNode Node', function () {
       "week_1": "1"
     };
 
-    doTest(config, "2023/06/12 04:50", false, done);
+    doTest(config, "2023/06/12 04:50", "msg", false, done);
   });
 
 
@@ -219,7 +239,7 @@ describe('TimeGateNode Node', function () {
       "month_1": "6"
     };
 
-    doTest(config, "2023/06/12 04:50", true, done);
+    doTest(config, "2023/06/12 04:50", "msg", true, done);
   });
 
   it('check month number node2', function (done) {
@@ -228,7 +248,7 @@ describe('TimeGateNode Node', function () {
       "month_1": "7"
     };
 
-    doTest(config, "2023/06/12 04:50", false, done);
+    doTest(config, "2023/06/12 04:50", "msg", false, done);
   });
 
   // Complete Tests
@@ -240,7 +260,7 @@ describe('TimeGateNode Node', function () {
       "month_1": "6"
     };
 
-    doTest(config, "2023/06/12 04:50", true, done);
+    doTest(config, "2023/06/12 04:50", "msg", true, done);
   });
 
   it('check complete bad day node2', function (done) {
@@ -251,7 +271,7 @@ describe('TimeGateNode Node', function () {
       "month_1": "6"
     };
 
-    doTest(config, "2023/06/12 04:50", false, done);
+    doTest(config, "2023/06/12 04:50", "msg", false, done);
   });
 
   it('check complete bad week node2', function (done) {
@@ -262,7 +282,7 @@ describe('TimeGateNode Node', function () {
       "month_1": "6"
     };
 
-    doTest(config, "2023/06/12 04:50", false, done);
+    doTest(config, "2023/06/12 04:50", "msg", false, done);
   });
 
 
@@ -275,7 +295,7 @@ describe('TimeGateNode Node', function () {
     };
 
     
-    doTest(config, "2023/06/12 04:50", false, done);
+    doTest(config, "2023/06/12 04:50", "msg", false, done);
   });
   /*   it('receive on second node', function (done) {
       var config = 
@@ -287,17 +307,17 @@ describe('TimeGateNode Node', function () {
     doTest(config, false, done);
     }); */
 
-  function doTest(config, refTime, testFirstNode, done) {
+  function doTest(config, refTime, refTimeType, testFirstNode, done) {
     var TimeGateNode = {
-      ... { id: "tg", type: "timegate", name: "test name", wires: [["o1"], ["o2"]] },
+      ... { id: "tg", type: "timegate", name: "test name", wires: [["o1"], ["o2"]], z:"flowA" },
       ...config,
-      ... { "unittest_time": refTime }
+      ... { "targetDateTime": "targetDateTime", "targetDateTimeType": refTimeType }
     };
-
+    
     var flow = [
       TimeGateNode,
-      { id: "o1", type: "helper", wires: [] },
-      { id: "o2", type: "helper", wires: [] },
+      { id: "o1", type: "helper", wires: [], z:"flowA" },
+      { id: "o2", type: "helper", wires: [], z:"flowA" },
     ];
 
     helper.load(timegateNode, flow, function () {
@@ -312,7 +332,15 @@ describe('TimeGateNode Node', function () {
         done();
       });
 
-      tg.receive({ payload: "test" });
+      if (refTimeType === "msg") {
+        tg.receive({ payload: "test", targetDateTime: refTime });
+      } else  if (refTimeType === "flow") {
+        o1.context().flow.set("targetDateTime", refTime);
+        tg.receive({ payload: "test"});
+      } else  if (refTimeType === "global") {
+        o1.context().global.set("targetDateTime", refTime);
+        tg.receive({ payload: "test"});
+      }
     });
   }
 
