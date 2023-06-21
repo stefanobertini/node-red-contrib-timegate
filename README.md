@@ -29,9 +29,23 @@ passes the input msg when none of the timer matches the current time.
 
 ## Configurations
 
-You can configure up to five different time matching configurations.
-
 ![node-red-contrib-timegate-setup](assets/images/node-setup.png)
+
+### Reference datetime
+The node can use the *current date and time* to check against one of it's configurations or can be initialized with a *property inside the message* passed to it's input, a value inside the *flow* object or a *global value*.
+
+You can use the **Reference DateTime Field** to decide where to get an external reference datetime from.
+
+The value can be specified in one of these formats:
+```
+YYYY/MM/DD hh:mm 
+YYYY/MM/DD
+```
+
+If the msg/flow/global variable is not set, the node will use the current date time.
+
+### Time matching configurations
+You can configure up to five different time matching configurations to be checked against the reference datetime.
 
 For each configuration, you can specify these parameters:
 
@@ -123,3 +137,4 @@ Thanks.
 * 1.0.3 Fixed a regression bug
 * 1.0.4 Moved examples to the correct folder
 * 1.0.5 Fixes issue #6 Name not shown in node
+* 1.0.6 Added the possibility to read reference datetime from msg, flow or global
