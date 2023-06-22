@@ -49,6 +49,31 @@ describe('TimeGateNode Config', function () {
     chechStatus(config, "Config 1: Invalid time.", done);
   });
 
+  it('invalid time conversion error', function (done) {
+    var config = {
+      "time_1": "hh:mm", 
+    };
+
+    chechStatus(config, "Config 1: Invalid time.", done);
+  });
+
+  it('invalid time missing minutes', function (done) {
+    var config = {
+      "time_1": "10", 
+    };
+
+    chechStatus(config, "Config 1: Invalid time.", done);
+  });
+
+
+  it('invalid time missing ', function (done) {
+    var config = {
+      "month_1": "1", 
+    };
+
+    chechStatus(config, "Config 1: Time cannot be empty.", done);
+  });  
+
   it('invalid time multiple interval ', function (done) {
     var config = {
       "time_1": "10:00-11:00-12:00", 
@@ -58,7 +83,7 @@ describe('TimeGateNode Config', function () {
   });
 
 
-  it('invalid time inverted intervall', function (done) {
+  it('invalid time inverted interval', function (done) {
     var config = {
       "time_1": "11:00-10:00",
     };
@@ -201,6 +226,7 @@ describe('TimeGateNode Config', function () {
 
     chechStatus(config, "Config 1: Invalid month.", done);
   }); 
+  
   function chechStatus(config, text, done) {
     var flow = [{
       ... { id: "tg", type: "timegate", name: "test name" },
