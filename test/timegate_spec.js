@@ -324,7 +324,6 @@ describe('TimeGateNode Node', function () {
       "month_1": "7"
     };
 
-    
     doTest(config, "2023/06/12 04:50", "msg", false, done);
   });
  

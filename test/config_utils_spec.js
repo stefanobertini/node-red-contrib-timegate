@@ -57,6 +57,14 @@ describe('TimeGateNode Config', function () {
     chechStatus(config, "Config 1: Invalid time.", done);
   });
 
+  it('invalid time bad time', function (done) {
+    var config = {
+      "time_1": "25:61", 
+    };
+
+    chechStatus(config, "Config 1: Invalid time.", done);
+  });
+
   it('invalid time missing minutes', function (done) {
     var config = {
       "time_1": "10", 
