@@ -16,7 +16,7 @@ const specialTimes = new Map([
   ["dawn", -112],
   ["nauticaldawn", -113],
   ["moonrise", -114],
-  ["monnset", -115]
+  ["moonset", -115]
 ]);
 
 module.exports = {
@@ -38,6 +38,7 @@ module.exports = {
     ret.set(specialTimes.get("sunriseend"), times.sunriseEnd.getHours() * 60 + times.sunriseEnd.getMinutes());
     ret.set(specialTimes.get("goldenhour"), times.goldenHour.getHours() * 60 + times.goldenHour.getMinutes());
     ret.set(specialTimes.get("goldenhourend"), times.goldenHourEnd.getHours() * 60 + times.goldenHourEnd.getMinutes());
+    ret.set(specialTimes.get("sunset"), times.sunset.getHours() * 60 + times.sunset.getMinutes());
     ret.set(specialTimes.get("sunsetstart"), times.sunsetStart.getHours() * 60 + times.sunsetStart.getMinutes());
     ret.set(specialTimes.get("solarnoon"), times.solarNoon.getHours() * 60 + times.solarNoon.getMinutes());
     ret.set(specialTimes.get("dusk"), times.dusk.getHours() * 60 + times.dusk.getMinutes());
@@ -49,7 +50,7 @@ module.exports = {
     ret.set(specialTimes.get("nauticaldawn"), times.nauticalDawn.getHours() * 60 + times.nauticalDawn.getMinutes());
 
     ret.set(specialTimes.get("moonrise"), moons.rise.getHours() * 60 + moons.rise.getMinutes());
-    ret.set(specialTimes.get("monnset"), moons.set.getHours() * 60 + moons.set.getMinutes());
+    ret.set(specialTimes.get("moonset"), moons.set.getHours() * 60 + moons.set.getMinutes());
 
     return ret;
   },
@@ -63,6 +64,7 @@ module.exports = {
     ret.set("sunriseend", formatTime(times.sunriseEnd.getHours()) + ":" +formatTime(times.sunriseEnd.getMinutes()));
     ret.set("goldenhour", formatTime(times.goldenHour.getHours()) + ":" +formatTime(times.goldenHour.getMinutes()));
     ret.set("goldenhourend", formatTime(times.goldenHourEnd.getHours()) + ":" +formatTime(times.goldenHourEnd.getMinutes()));
+    ret.set("sunset", formatTime(times.sunset.getHours()) + ":" +formatTime(times.sunset.getMinutes()));
     ret.set("sunsetstart", formatTime(times.sunsetStart.getHours()) + ":" +formatTime(times.sunsetStart.getMinutes()));
     ret.set("solarnoon", formatTime(times.solarNoon.getHours()) + ":" +formatTime(times.solarNoon.getMinutes()));
     ret.set("dusk", formatTime(times.dusk.getHours()) + ":" +formatTime(times.dusk.getMinutes()));
@@ -74,7 +76,7 @@ module.exports = {
     ret.set("nauticaldawn", formatTime(times.nauticalDawn.getHours()) + ":" +formatTime(times.nauticalDawn.getMinutes()));
 
     ret.set("moonrise", formatTime(moons.rise.getHours()) + ":" +formatTime(moons.rise.getMinutes()));
-    ret.set("monnset", formatTime(moons.set.getHours()) + ":" +formatTime(moons.set.getMinutes()));
+    ret.set("moonset", formatTime(moons.set.getHours()) + ":" +formatTime(moons.set.getMinutes()));
 
     return ret;
   },

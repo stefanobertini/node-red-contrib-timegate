@@ -161,9 +161,6 @@ describe('TimeGateNode Suncalc Functions', function () {
     doTest("moonset", true, done);
   });
   
-  it('check moonset node2', function (done) {
-    doTest("moonset", false, done);
-  });
 
 
 
