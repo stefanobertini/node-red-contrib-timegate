@@ -131,7 +131,7 @@ Example:
 ```
 Time: 10:00-11:00
 Day: ODD
-Week: ENEN-YEAR
+Week: EVEN-YEAR
 Month: 1,2,3,4,5,6
 
 ```
@@ -161,3 +161,4 @@ Thanks.
 * 1.0.4 Moved examples to the correct folder
 * 1.0.5 Fixes issue #6 Name not shown in node
 * 1.0.6 Added the possibility to read reference datetime from msg, flow or global
+* 1.0.7 Added suncalc suport
