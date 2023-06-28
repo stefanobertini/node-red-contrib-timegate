@@ -1,6 +1,6 @@
 {
   "name": "@stefanobertini/node-red-contrib-timegate",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "description": "A node that routes any input according to the current time.",
   "keywords": [
     "node-red",
@@ -35,11 +35,15 @@
   },
   "scripts": {
     "test": "mocha \"test/**/*_spec.js\" --timeout 5000",
+    "test_suncalc": "mocha \"test/**/suncalc_spec.js\" --timeout 5000",
+    "test_timegate": "mocha \"test/**/timegate_spec.js\" --timeout 5000",    
+    "test_config_utils": "mocha \"test/**/config_utils_spec.js\" --timeout 5000",
     "test-with-coverage": "nyc --reporter=html --reporter=text mocha \"test/**/*_spec.js\" --timeout 10000",
     "lint": "eslint timegate/*.js"
   },
   "dependencies": {
-    "moment": "^2.29.4"
+    "moment": "^2.29.4",
+    "suncalc": "^1.9.0"
   },
   "publishConfig": {
     "access": "public"

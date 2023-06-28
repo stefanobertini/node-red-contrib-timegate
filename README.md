@@ -38,7 +38,7 @@ You can use the **Reference DateTime Field** to decide where to get an external 
 
 The value can be specified in one of these formats:
 ```
-YYYY/MM/DD hh:mm 
+YYYY/MM/DD HH:mm 
 YYYY/MM/DD
 ```
 
@@ -52,9 +52,32 @@ For each configuration, you can specify these parameters:
 ### Time
 One or more time ranges separated by commas.
 
+A time can be be a 24 hour time or a SunCalc event, as expressed by the [SunCalc Library](https://github.com/mourner/suncalc). 
+
+Keywords are case insensitive.
+
+
+| Property | Description |
+|----------|----------|
+| sunrise | sunrise (top edge of the sun appears on the horizon) |
+| sunriseEnd | sunrise ends (bottom edge of the sun touches the horizon) |
+| goldenHourEnd | morning golden hour (soft light, best time for photography) ends |
+| solarNoon | solar noon (sun is in the highest position) |
+| goldenHour | evening golden hour starts |
+| sunsetStart | sunset starts (bottom edge of the sun touches the horizon) |
+| sunset | sunset (sun disappears below the horizon, evening civil twilight starts) |
+| dusk | dusk (evening nautical twilight starts) |
+| nauticalDusk | nautical dusk (evening astronomical twilight starts) |
+| night | night starts (dark enough for astronomical observations) |
+| nadir | nadir (darkest moment of the night, sun is in the lowest position) |
+| nightEnd | night ends (morning astronomical twilight starts) |
+| nauticalDawn | nautical dawn (morning nautical twilight starts) |
+| dawn | dawn (morning nautical twilight ends, morning civil twilight starts) |
+
 Example:
 ```
 10:15-11:30 or 10:00-12:00,15:30-16:30
+12:00-goldenHour or sunsetStart-sunset
 ```
 
 ### Day
@@ -108,7 +131,7 @@ Example:
 ```
 Time: 10:00-11:00
 Day: ODD
-Week: ENEN-YEAR
+Week: EVEN-YEAR
 Month: 1,2,3,4,5,6
 
 ```
@@ -138,3 +161,4 @@ Thanks.
 * 1.0.4 Moved examples to the correct folder
 * 1.0.5 Fixes issue #6 Name not shown in node
 * 1.0.6 Added the possibility to read reference datetime from msg, flow or global
+* 1.0.7 Added suncalc suport
