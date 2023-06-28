@@ -32,7 +32,7 @@ module.exports = function (RED) {
           var now;
           
           if (value) {
-            now = moment(value, "YYYY/MM/DD hh:mm");
+            now = moment(value, "YYYY/MM/DD HH:mm");
             if (!now.isValid()) {
               now = moment(value, "YYYY/MM/DD");
             }

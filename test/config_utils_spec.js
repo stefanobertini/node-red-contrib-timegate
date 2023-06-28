@@ -51,7 +51,7 @@ describe('TimeGateNode Config', function () {
 
   it('invalid time conversion error', function (done) {
     var config = {
-      "time_1": "hh:mm", 
+      "time_1": "HH:mm", 
     };
 
     chechStatus(config, "Config 1: Invalid time.", done);

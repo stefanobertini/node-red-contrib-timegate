@@ -38,7 +38,7 @@ You can use the **Reference DateTime Field** to decide where to get an external 
 
 The value can be specified in one of these formats:
 ```
-YYYY/MM/DD hh:mm 
+YYYY/MM/DD HH:mm 
 YYYY/MM/DD
 ```
 

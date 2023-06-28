@@ -170,7 +170,7 @@ describe('TimeGateNode Suncalc Functions', function () {
   function doTest(suncalcKeyword, testFirstNode, done) {
     const default_date = "2023/06/27"
 
-    const refDate = moment(default_date + " 22:00", "YYYY/MM/DD hh:mm");
+    const refDate = moment(default_date + " 22:00", "YYYY/MM/DD HH:mm");
     const times = suncalc_utils.calcTimeStrings(refDate, default_lat, default_lon);
 
     var refTime;
