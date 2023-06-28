@@ -36,7 +36,8 @@
   "scripts": {
     "test": "mocha \"test/**/*_spec.js\" --timeout 5000",
     "test_suncalc": "mocha \"test/**/suncalc_spec.js\" --timeout 5000",
-    "test_timegate": "mocha \"test/**/timegate_spec.js\" --timeout 5000",
+    "test_timegate": "mocha \"test/**/timegate_spec.js\" --timeout 5000",    
+    "test_config_utils": "mocha \"test/**/config_utils_spec.js\" --timeout 5000",
     "test-with-coverage": "nyc --reporter=html --reporter=text mocha \"test/**/*_spec.js\" --timeout 10000",
     "lint": "eslint timegate/*.js"
   },
