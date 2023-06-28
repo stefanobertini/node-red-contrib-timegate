@@ -35,10 +35,9 @@
   },
   "scripts": {
     "test": "mocha \"test/**/*_spec.js\" --timeout 5000",
-<<<<<<< HEAD
+    "test_suncalc": "mocha \"test/**/suncalc_spec.js\" --timeout 5000",
+    "test_timegate": "mocha \"test/**/timegate_spec.js\" --timeout 5000",
     "test-with-coverage": "nyc --reporter=html --reporter=text mocha \"test/**/*_spec.js\" --timeout 10000",
-=======
->>>>>>> 3ba00b91f27b8cc4f1e3454cc786ffd098064522
     "lint": "eslint timegate/*.js"
   },
   "dependencies": {
