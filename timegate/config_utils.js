@@ -23,6 +23,7 @@ module.exports = {
 
     if (configEntry.valid.time && !configEntry.empty.time) {
       configEntry.intervals = getTimeIntervals(configEntry.time);
+      configEntry.hasSuncalcKeyword = configEntry.intervals.filter(interval => interval.from < 0 || interval.to < 0).length > 0;
     }
     if (configEntry.valid.day && !configEntry.empty.day) {
       configEntry.days = splitEntriesInArray(configEntry.day);    
@@ -44,7 +45,7 @@ module.exports = {
     return configEntries;
   },
 
-  showConfigErrors: function (configEntries, node) {
+  showConfigErrors: function (configEntries, position, node) {
     var errorFound = false;
     for (let index = 0; index < configEntries.length && !errorFound; index++) {
       const configEntry = configEntries[index];
@@ -68,6 +69,10 @@ module.exports = {
         showConfigErrorStatus("Time cannot be empty", index, node);
         errorFound = true;
       }
+      if (configEntry.hasSuncalcKeyword && (position.lat === undefined || position.lon === undefined)) {
+        showConfigErrorStatus("Invalid latitude or longitude", index, node);
+        errorFound = true; 
+      }
     }
   }
 }
@@ -75,8 +80,8 @@ module.exports = {
 function getTime(time) {
   const split = time.split(":");
   if (split.length == 1) {
-    if (suncalc_utils.isSunCalcKeyword(split)) {
-      return suncalc_utils.getSunCalcKeywordId(split);
+    if (suncalc_utils.isSunCalcKeyword(split[0])) {
+      return suncalc_utils.getSunCalcKeywordId(split[0]);
     } else {
       return -1;
     }

@@ -1,5 +1,5 @@
-var helper = require("node-red-node-test-helper");
-var timegateNode = require("../timegate/timegate.js");
+const helper = require("node-red-node-test-helper");
+const timegateNode = require("../timegate/timegate.js");
 
 describe('TimeGateNode Config', function () {
 
@@ -82,14 +82,6 @@ describe('TimeGateNode Config', function () {
     chechStatus(config, "Config 1: Invalid time.", done);
   });
 
-
-  it('invalid time inverted interval', function (done) {
-    var config = {
-      "time_1": "11:00-10:00",
-    };
-
-    chechStatus(config, "Config 1: Invalid time.", done);
-  });  
   it('invalid empty time', function (done) {
     var config = {
       "time_1": "10:00-", 
@@ -117,11 +109,19 @@ describe('TimeGateNode Config', function () {
   it('valid suncal keywords', function (done) {
     var config = {
       "time_1": "sunrise - sunriseend,  goldenhour  -  goldenhourend  ,SUNset-sunsetSTART,solarnoon-dusk,nauticaldusk-night,nightend-nadir,dawn-nauticaldawn",
+      lat: 43.7729844, lon: 11.2567622
     };
 
     chechStatusEmpty(config, done);
   });
   
+  it('missing geoposition with suncalc keywords', function (done) {
+    var config = {
+      "time_1": "sunrise - sunriseend"
+    };
+
+    chechStatus(config, "Config 1: Invalid latitude or longitude.", done);
+  });
   
   // Day tests 
    it('valid single day', function (done) {

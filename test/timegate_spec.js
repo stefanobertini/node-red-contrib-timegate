@@ -1,5 +1,5 @@
-var helper = require("node-red-node-test-helper");
-var timegateNode = require("../timegate/timegate.js");
+const helper = require("node-red-node-test-helper");
+const timegateNode = require("../timegate/timegate.js");
 
 describe('TimeGateNode Node', function () {
 
@@ -194,7 +194,7 @@ describe('TimeGateNode Node', function () {
       "time_1": "05:00-04:00",
     };
 
-    doTest(config, "2023/06/03 04:50", true, done);
+    doTest(config, "2023/06/03 04:50", "msg", true, done);
   });
 
   // Week Tests
@@ -365,7 +365,8 @@ describe('TimeGateNode Node', function () {
     var TimeGateNode = {
       ... { id: "tg", type: "timegate", name: "test name", wires: [["o1"], ["o2"]], z:"flowA" },
       ...config,
-      ... { "targetDateTime": "targetDateTime", "targetDateTimeType": refTimeType }
+      ... { "targetDateTime": "targetDateTime", "targetDateTimeType": refTimeType },
+      ... {lat: 43.7729844, lon: 11.2567622}
     };
     
     var flow = [

@@ -5,7 +5,7 @@
   const month = /^((1[0-2]|\d)(,(1[0-2]|\d))*)?$/;
   
   const regexTime = /^(0[0-9]|1[0-9]|2[0-3]|[0-9]):[0-5][0-9]$/g;
-  const specialTimes = ["sunrise","sunriseend","goldenhour","goldenhourend","sunset","sunsetstart","solarnoon","dusk","nauticaldusk","night","nightend","nadir","dawn","nauticaldawn"];
+  const specialTimes = ["sunrise","sunriseend","goldenhour","goldenhourend","sunset","sunsetstart","solarnoon","dusk","nauticaldusk","night","nightend","nadir","dawn","nauticaldawn","moonrise","moonset"];
 
   function validateTime(timeEntry) {
     var valid = true;
@@ -42,8 +42,22 @@
     color: '#E2D96E',
     defaults: {
       name: {value: ''},
-      targetDateTime: {value: 'targetDateTime', required: false},
+      targetDateTime: {
+        value: 'targetDateTime', 
+        required: false, 
+        validate: (RED.validators.hasOwnProperty('typedInput')?RED.validators.typedInput('payloadType'):function(v) { return true})
+      },
       targetDateTimeType: { },
+      lat: {
+        value:0, 
+        required: false,
+        validate: RED.validators.number(true)
+      },
+      lon: {
+        value:0, 
+        required: false,
+        validate: RED.validators.number(true)
+      },
       time_1: {
         value: '00:00-23:59',
         required: true,
@@ -166,12 +180,22 @@
       })
 
       $("#node-input-targetDateTime").on('change',function() {
-                if ($("#node-input-targetDateTime").typedInput('type') === 'msg' &&
-                    $("#node-input-targetDateTime").typedInput('value') === ''
-                ) {
-                    $("#node-input-targetDateTime").typedInput('value','targetDateTime');
+          if ($("#node-input-targetDateTime").typedInput('type') === 'msg' &&
+              $("#node-input-targetDateTime").typedInput('value') === ''
+          ) {
+              $("#node-input-targetDateTime").typedInput('value','targetDateTime');
+          }
+      });
+
+      // Get default position from position API
+      if (($("#node-input-lat").val() === "") && ($("#node-input-lon").val() === "")) {
+                if ("geolocation" in navigator) {
+                    navigator.geolocation.getCurrentPosition(function(position) {
+                        $("#node-input-lat").val(Number(position.coords.latitude.toFixed(5)));
+                        $("#node-input-lon").val(Number(position.coords.longitude.toFixed(5)));
+                    });
                 }
-            });
+            }
     },
     oneditsave: function() {
       this.targetDateTimeType = $("#node-input-targetDateTime").typedInput('type');
@@ -193,6 +217,15 @@
       <label for="node-input-targetDateTime"><i class="fa fa-ellipsis-h"></i> Reference DateTime field</label>
       <input type="text" id="node-input-targetDateTime">
       <input type="hidden" id="node-input-targetDateTimeType">
+    </div>
+
+    <div class="form-row">	
+      <label for="node-input-lat"><i class="fa fa-globe"></i> Latitude</label>
+      <input type="text" id="node-input-lat">
+    </div>  
+    <div class="form-row">	    
+      <label for="node-input-lon"><i class="fa fa-globe"></i> Longitude</label>
+      <input type="text" id="node-input-lon">
     </div>
 
     <div class="form-row">

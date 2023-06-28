@@ -1,11 +1,13 @@
 const moment = require('moment')
+const suncalc_utils = require('./suncalc_utils')
+
 const dayNames = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"];
 
 module.exports = {
 
-  isInRange: function (configEntry, refMoment) {
+  isInRange: function (configEntry, refMoment, position) {
     
-    if (!isTimeInRange(configEntry, refMoment)) {
+    if (!isTimeInRange(configEntry, refMoment, position)) {
       return false;
     }
 
@@ -68,12 +70,26 @@ function isDayInRange(configEntry, refMoment) {
   return false;
 }
 
-function isTimeInRange(configEntry, refMoment) {
+function isTimeInRange(configEntry, refMoment, position) {
   const time = refMoment.hours() * 60 + refMoment.minutes();
   for (let index = 0; index < configEntry.intervals.length; index++) {
+
     const interval = configEntry.intervals[index];
-    const intervalMin = Math.min (interval.from, interval.to);
-    const intervalMax = Math.max (interval.from, interval.to);
+
+    var from = interval.from;
+    var to = interval.to;
+
+    if (from <0 || to <0) {
+      const times = suncalc_utils.calcTimes(refMoment.toDate(), position.lat, position.lon);
+      if (from < 0) {
+        from = times.get(from);
+      }
+      if (to < 0) {
+        to = times.get(to);
+      }      
+    }
+    const intervalMin = Math.min (from, to);
+    const intervalMax = Math.max (from, to);
 
     if(time >= intervalMin && time <= intervalMax) {
       return true;

@@ -11,7 +11,13 @@ module.exports = function (RED) {
     // Read configuration entries
     var configEntries = config_utils.getConfigEntries(config);
 
-    config_utils.showConfigErrors(configEntries, node);
+    const position = 
+    { 
+      lat: config.lat,
+      lon: config.lon
+    }
+
+    config_utils.showConfigErrors(configEntries, position, node);
 
     node.on('input', function (msg, send, done) {
       var isTime = false;
@@ -41,7 +47,7 @@ module.exports = function (RED) {
               const configEntry = configEntries[index];
 
               if (configEntry.valid.all && !configEntry.empty.empty && configEntry.empty.correct) {
-                if (range_utils.isInRange(configEntry, now)) {
+                if (range_utils.isInRange(configEntry, now, position)) {
                   isTime = true;
                   foundIndex = index + 1;
                 }
