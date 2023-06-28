@@ -174,7 +174,7 @@ describe('TimeGateNode Suncalc Functions', function () {
     const times = suncalc_utils.calcTimeStrings(refDate, default_lat, default_lon);
 
     var refTime;
-    refTime = moment(default_date + " " + times.get(suncalcKeyword), "YYYY/MM/DD hh:mm");
+    refTime = moment(default_date + " " + times.get(suncalcKeyword), "YYYY/MM/DD HH:mm");
     if (!testFirstNode) {
       refTime.subtract(1, 'm');
     }  
@@ -204,7 +204,7 @@ describe('TimeGateNode Suncalc Functions', function () {
         done();
       });
 
-      tg.receive({ payload: "test", targetDateTime: refTime.format("YYYY/MM/DD hh:mm") });      
+      tg.receive({ payload: "test", targetDateTime: refTime.format("YYYY/MM/DD HH:mm") });      
     });
   }
 
