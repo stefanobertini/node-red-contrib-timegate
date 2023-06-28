@@ -53,6 +53,15 @@ describe('TimeGateNode Node', function () {
     doTest(config, "2023/06/03 04:50", "msg", true, done);
   });
 
+  it('check time node1 24h format', function (done) {
+    var config = {
+      "time_1": "12:00-23:00",
+    };
+
+    doTest(config, "2023/06/03 15:00", "msg", true, done);
+  });
+
+
   it('check time node1 single interval 1 message date only', function (done) {
     var config = {
       "time_1": "00:00-23:59",
