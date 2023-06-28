@@ -1,21 +1,67 @@
 <script type="text/javascript">
  
-  const regexTime = /^(([0-9]|0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]-([0-9]|0[0-9]|1[0-9]|2[0-3]):[0-5][0-9](,([0-9]|0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]-([0-9]|0[0-9]|1[0-9]|2[0-3]):[0-5][0-9])*)?$/; 
   const regexDay = /^(((0[0-9]|1[0-9]|2[0-9]|3[0-1]|[0-9])|ODD|EVEN|ODD-YEAR|EVEN-YEAR|SUN|MON|TUE|WED|THU|FRI|SAT)(,((0[0-9]|1[0-9]|2[0-9]|3[0-1]|[0-9])|ODD|EVEN|ODD-YEAR|EVEN-YEAR|SUN|MON|TUE|WED|THU|FRI|SAT))*)?$/i;
   const regexWeek = /^(([1-6]|ODD|EVEN|ODD-YEAR|EVEN-YEAR)(,([1-6]|ODD|EVEN|ODD-YEAR|EVEN-YEAR))*)?$/i;
   const month = /^((1[0-2]|\d)(,(1[0-2]|\d))*)?$/;
   
+  const regexTime = /^(0[0-9]|1[0-9]|2[0-3]|[0-9]):[0-5][0-9]$/g;
+  const specialTimes = ["sunrise","sunriseend","goldenhour","goldenhourend","sunset","sunsetstart","solarnoon","dusk","nauticaldusk","night","nightend","nadir","dawn","nauticaldawn","moonrise","moonset"];
+
+  function validateTime(timeEntry) {
+    var valid = true;
+    if (!isEmpty(timeEntry)) {
+      const split = timeEntry.split(",");
+      split.forEach(item => {
+        if (!checkValidTime(item)) {
+          valid = false;
+        }
+      });
+    }
+    return valid;
+  }
+ 
+  function checkValidTime(item) {
+
+    const split = item.split("-");
+    if (split.length != 2) {
+      return false;
+    }
+
+    const from = split[0].trim().toLowerCase();
+    const to = split[1].trim().toLowerCase(); 
+
+    return ((from.match(regexTime) || specialTimes.includes(from)) && (to.match(regexTime) || specialTimes.includes(to)));
+  }
+ 
+  function isEmpty(str) {
+    return (!str || str.trim().length === 0);
+  }
+
   RED.nodes.registerType('timegate',{
     category: 'function',
     color: '#E2D96E',
     defaults: {
       name: {value: ''},
-      targetDateTime: {value: 'targetDateTime', required: false},
+      targetDateTime: {
+        value: 'targetDateTime', 
+        required: false, 
+        validate: (RED.validators.hasOwnProperty('typedInput')?RED.validators.typedInput('payloadType'):function(v) { return true})
+      },
       targetDateTimeType: { },
+      lat: {
+        value:0, 
+        required: false,
+        validate: RED.validators.number(true)
+      },
+      lon: {
+        value:0, 
+        required: false,
+        validate: RED.validators.number(true)
+      },
       time_1: {
         value: '00:00-23:59',
         required: true,
-        validate: RED.validators.regex(regexTime)
+        validate: validateTime
       },
       day_1: {
         value: '',
@@ -36,7 +82,7 @@
       time_2: {
         value: '',
         required: false,
-        validate: RED.validators.regex(regexTime)
+        validate: validateTime
       },
       day_2: {
         value: '',
@@ -57,7 +103,7 @@
       time_3: {
         value: '',
         required: false,
-        validate: RED.validators.regex(regexTime)
+        validate: validateTime
       },
       day_3: {
         value: '',
@@ -78,7 +124,7 @@
       time_4: {
         value: '',
         required: false,
-        validate: RED.validators.regex(regexTime)
+        validate: validateTime
       },
       day_4: {
         value: '',
@@ -99,7 +145,7 @@
       time_5: {
         value: '',
         required: false,
-        validate: RED.validators.regex(regexTime)
+        validate: validateTime
       },
       day_5: {
         value: '',
@@ -134,12 +180,22 @@
       })
 
       $("#node-input-targetDateTime").on('change',function() {
-                if ($("#node-input-targetDateTime").typedInput('type') === 'msg' &&
-                    $("#node-input-targetDateTime").typedInput('value') === ''
-                ) {
-                    $("#node-input-targetDateTime").typedInput('value','targetDateTime');
+          if ($("#node-input-targetDateTime").typedInput('type') === 'msg' &&
+              $("#node-input-targetDateTime").typedInput('value') === ''
+          ) {
+              $("#node-input-targetDateTime").typedInput('value','targetDateTime');
+          }
+      });
+
+      // Get default position from position API
+      if (($("#node-input-lat").val() === "") && ($("#node-input-lon").val() === "")) {
+                if ("geolocation" in navigator) {
+                    navigator.geolocation.getCurrentPosition(function(position) {
+                        $("#node-input-lat").val(Number(position.coords.latitude.toFixed(5)));
+                        $("#node-input-lon").val(Number(position.coords.longitude.toFixed(5)));
+                    });
                 }
-            });
+            }
     },
     oneditsave: function() {
       this.targetDateTimeType = $("#node-input-targetDateTime").typedInput('type');
@@ -161,6 +217,15 @@
       <label for="node-input-targetDateTime"><i class="fa fa-ellipsis-h"></i> Reference DateTime field</label>
       <input type="text" id="node-input-targetDateTime">
       <input type="hidden" id="node-input-targetDateTimeType">
+    </div>
+
+    <div class="form-row">	
+      <label for="node-input-lat"><i class="fa fa-globe"></i> Latitude</label>
+      <input type="text" id="node-input-lat">
+    </div>  
+    <div class="form-row">	    
+      <label for="node-input-lon"><i class="fa fa-globe"></i> Longitude</label>
+      <input type="text" id="node-input-lon">
     </div>
 
     <div class="form-row">
@@ -289,9 +354,80 @@
     <dl class="message-properties">
       <dt>Time</dt>
       <dd>One or more <b>time ranges</b> separated by commas.
-      <p>Example:</p>
-      <p><code>10:15-11:30</code> or <code>10:00-12:00,15:30-16:30</code></p>
-      </dd>
+      <br/>
+      <p>A time can be be a 24 hour time or a SunCalc event, as expressed by the <a href="https://github.com/mourner/suncalc">SunCalc Library</a>.</p>
+      <p>Keywords are case insensitive.</p>
+      <table>
+        <thead>
+        <tr>
+        <th>Property</th>
+        <th>Description</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+        <td><code>sunrise</code></td>
+        <td>sunrise (top edge of the sun appears on the horizon)</td>
+        </tr>
+        <tr>
+        <td><code>sunriseEnd</code></td>
+        <td>sunrise ends (bottom edge of the sun touches the horizon)</td>
+        </tr>
+        <tr>
+        <td><code>goldenHourEnd</code></td>
+        <td>morning golden hour (soft light, best time for photography) ends</td>
+        </tr>
+        <tr>
+        <td><code>solarNoon</code></td>
+        <td>solar noon (sun is in the highest position)</td>
+        </tr>
+        <tr>
+        <td><code>goldenHour</code></td>
+        <td>evening golden hour starts</td>
+        </tr>
+        <tr>
+        <td><code>sunsetStart</code></td>
+        <td>sunset starts (bottom edge of the sun touches the horizon)</td>
+        </tr>
+        <tr>
+        <td><code>sunset</code></td>
+        <td>sunset (sun disappears below the horizon, evening civil twilight starts)</td>
+        </tr>
+        <tr>
+        <td><code>dusk</code></td>
+        <td>dusk (evening nautical twilight starts)</td>
+        </tr>
+        <tr>
+        <td><code>nauticalDusk</code></td>
+        <td>nautical dusk (evening astronomical twilight starts)</td>
+        </tr>
+        <tr>
+        <td><code>night</code></td>
+        <td>night starts (dark enough for astronomical observations)</td>
+        </tr>
+        <tr>
+        <td><code>nadir</code></td>
+        <td>nadir (darkest moment of the night, sun is in the lowest position)</td>
+        </tr>
+        <tr>
+        <td><code>nightEnd</code></td>
+        <td>night ends (morning astronomical twilight starts)</td>
+        </tr>
+        <tr>
+        <td><code>nauticalDawn</code></td>
+        <td>nautical dawn (morning nautical twilight starts)</td>
+        </tr>
+        <tr>
+        <td><code>dawn</code></td>
+        <td>dawn (morning nautical twilight ends, morning civil twilight starts)</td>
+        </tr>
+        </tbody>
+        </table>
+        <br/>
+        <p>Example:</p>
+        <p><code>10:15-11:30</code> or <code>10:00-12:00,15:30-16:30</code></p>
+        <p><code>12:00-goldenHour</code> or <code>sunsetStart-sunset</code></p>
+     
     </dl>
     <dl class="message-properties">
       <dt>Day</dt>
@@ -335,7 +471,66 @@
       <code>
         Time: 10:00-11:00<br/>
         Day: ODD<br/>
-        Week: ENEN-YEAR<br/>
+        Week: EVEN-YEAR<br/>
+        Month: 1,2,3,4,5,6      
+      </code> 
+      <br/><br/>
+      <p>This configuration will pass the input to Out-1 only from 10:00 to 11:00 of every odd day (based on the number of the day in the month) of every even week (based on the number of the week in the year) and from January to June.</p>
+      <p>Otherwise, it will pass the input to Out-2.</p>
+      </dd>
+    </dl>    
+  <h3>References</h3>
+    <ul>
+        <li><a href="https://github.com/stefanobertini/node-red-contrib-timegate">GitHub</a> - the nodes github repository</li>
+    </ul>
+  </script>  
+  
+  
+     
+    </dl>
+    <dl class="message-properties">
+      <dt>Day</dt>
+      <dd>
+      <p>One or more <b>day values</b> separated by commas.</p>
+      <p>Possible values:</p>
+      <p><code>1,8,15,21</code> to match the day number</p>
+      <p><code>SUN,MON,...</code> to match the day name</p>
+      <p><code>ODD,EVEN</code> to match odd or even days based on the number of the day in the month (1-31)</p>
+      <p><code>ODD-YEAR,EVEN-YEAR</code> to match odd or even days based on the number of the day in the year (1-365)</p>
+      <p>Example:<code>1,SUN,ODD</code> is true for: the first day of the month, every sundays and every odd day number in the month</p>
+      </dd>
+    </dl>
+    <dl class="message-properties">
+      <dt>Week</dt>
+      <dd>
+      <p>One or more <b>week values</b> separated by commas.</p>
+      <p>Possible values:</p>
+      <p><code>1,2,3,4,5,6</code> to match the week number in the month</p>
+      <p><code>ODD,EVEN</code> to match odd or even weeks based on the number of the week in the month (1-6)</p>
+      <p><code>ODD-YEAR,EVEN-YEAR</code> to match odd or even weeks based on the number of the day in the year (1-52)</p>
+      <p>Example:<code>1,EVEN-YEAR</code> is true for: the first week of the month and every even week number in the year</p>
+      </dd>
+    </dl>
+    <dl class="message-properties">
+      <dt>Month</dt>
+      <dd>
+      <p>One or more <b>month values</b> separated by commas.</p>
+      <p>Possible values:</p>
+      <p><code>1,2,3,4,5,6</code> to match the month</p>
+      <p>Example:<code>1,2,3</code> is true for: January, February and March</p>
+      </dd>
+    </dl>  
+    <dl class="message-properties">
+      <dt>Multiple configurations</dt>
+      <dd>
+      <p>For every timer configuration the time settings is mandatory. If you add any day, week or month settings, these are evaluated in AND between each other.</p>
+      <p>Multiple timer configurations are evaluated in OR between each other.</p>
+      <br/>
+      <p>Example:</p>
+      <code>
+        Time: 10:00-11:00<br/>
+        Day: ODD<br/>
+        Week: EVEN-YEAR<br/>
         Month: 1,2,3,4,5,6      
       </code> 
       <br/><br/>

@@ -1,5 +1,5 @@
-var helper = require("node-red-node-test-helper");
-var timegateNode = require("../timegate/timegate.js");
+const helper = require("node-red-node-test-helper");
+const timegateNode = require("../timegate/timegate.js");
 
 describe('TimeGateNode Config', function () {
 
@@ -49,6 +49,39 @@ describe('TimeGateNode Config', function () {
     chechStatus(config, "Config 1: Invalid time.", done);
   });
 
+  it('invalid time conversion error', function (done) {
+    var config = {
+      "time_1": "HH:mm", 
+    };
+
+    chechStatus(config, "Config 1: Invalid time.", done);
+  });
+
+  it('invalid time bad time', function (done) {
+    var config = {
+      "time_1": "25:61", 
+    };
+
+    chechStatus(config, "Config 1: Invalid time.", done);
+  });
+
+  it('invalid time missing minutes', function (done) {
+    var config = {
+      "time_1": "10", 
+    };
+
+    chechStatus(config, "Config 1: Invalid time.", done);
+  });
+
+
+  it('invalid time missing ', function (done) {
+    var config = {
+      "month_1": "1", 
+    };
+
+    chechStatus(config, "Config 1: Time cannot be empty.", done);
+  });  
+
   it('invalid time multiple interval ', function (done) {
     var config = {
       "time_1": "10:00-11:00-12:00", 
@@ -57,14 +90,6 @@ describe('TimeGateNode Config', function () {
     chechStatus(config, "Config 1: Invalid time.", done);
   });
 
-
-  it('invalid time inverted intervall', function (done) {
-    var config = {
-      "time_1": "11:00-10:00",
-    };
-
-    chechStatus(config, "Config 1: Invalid time.", done);
-  });  
   it('invalid empty time', function (done) {
     var config = {
       "time_1": "10:00-", 
@@ -89,8 +114,24 @@ describe('TimeGateNode Config', function () {
     chechStatus(config, "Config 1: Invalid time.", done);
   });
 
+  it('valid suncal keywords', function (done) {
+    var config = {
+      "time_1": "sunrise - sunriseend,  goldenhour  -  goldenhourend  ,SUNset-sunsetSTART,solarnoon-dusk,nauticaldusk-night,nightend-nadir,dawn-nauticaldawn",
+      lat: 43.7729844, lon: 11.2567622
+    };
 
-   // Day tests 
+    chechStatusEmpty(config, done);
+  });
+  
+  it('missing geoposition with suncalc keywords', function (done) {
+    var config = {
+      "time_1": "sunrise - sunriseend"
+    };
+
+    chechStatus(config, "Config 1: Invalid latitude or longitude.", done);
+  });
+  
+  // Day tests 
    it('valid single day', function (done) {
     var config = {
       "time_1": "10:00-11:00", "day_1": "1",
@@ -201,6 +242,7 @@ describe('TimeGateNode Config', function () {
 
     chechStatus(config, "Config 1: Invalid month.", done);
   }); 
+  
   function chechStatus(config, text, done) {
     var flow = [{
       ... { id: "tg", type: "timegate", name: "test name" },
